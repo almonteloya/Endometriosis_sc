@@ -5,8 +5,8 @@ library(Seurat)
 library(dittoSeq)
 library(dplyr)
 
-dir_in='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/'
-dir_out<- '/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Sfig1/'
+dir_in='/seurat_objects/'
+dir_out<- '/outdir/'
 
 dir.create(dir_out)
 

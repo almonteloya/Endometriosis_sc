@@ -1,5 +1,7 @@
 ### GSEA
-## Looking into multiple subcells and generating GSEA files
+## Looking into multiple subtypes and generating GSEA files
+## Using DEG results from DEG_specific.R 
+
 library(ggplot2)
 library(Seurat)
 library(dittoSeq)
@@ -9,8 +11,7 @@ library(fgsea)
 organism = "org.Hs.eg.db"
 library(organism, character.only = TRUE)
 
-dir = "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/stromal_specific/proliferative///"
-#dir = "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/epithelial_specific//"
+dir = "/dir/DEG/output"
 
 dir_out = paste0(dir,"GSEA/")
 dir.create(dir_out)
@@ -29,7 +30,7 @@ GSEA_plot<- function(markers,cell_type){
   markers_pvalue2 <- (markers %>% filter(p_val_adj<.05) %>% 
                         arrange(desc((avg_log2FC))) %>% filter(abs(avg_log2FC) > 0.25))
   print(dim(markers_pvalue2))
-  if ((nrow(markers_pvalue2) > 20)) {
+  if ((nrow(markers_pvalue2) > 20)) { ## having at least 20 DEG
     genelist<-markers_pvalue2$avg_log2FC
     names(genelist)<- rownames(markers_pvalue2)
     se <- gseGO(geneList= genelist,  ont ="BP", keyType = "SYMBOL",

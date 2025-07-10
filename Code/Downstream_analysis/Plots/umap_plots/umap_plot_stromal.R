@@ -3,8 +3,8 @@
 
 #### STROMAL
 
-dir_in <- '/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/'
-dir_out<-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig3/"
+dir_in <- '/seurat/data'
+dir_out<-"Fig3/"
 
 s_obj <- readRDS(sprintf("%s/Stromal_obj_2025.RDS",dir_in))
 

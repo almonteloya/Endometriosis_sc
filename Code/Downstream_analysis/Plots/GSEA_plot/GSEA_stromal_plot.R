@@ -4,9 +4,9 @@ library(ggplot2)
 library(clusterProfiler)
 library(fgsea)
 
-dir_proliferative<-("data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/stromal_specific/proliferative//GSEA/")
-dir_secretory<-("data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/stromal_specific/secretory///GSEA/")
-dir_out<-("data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig3/")
+dir_proliferative<-("DEG/pristine_disease/stromal_specific/proliferative/GSEA/")
+dir_secretory<-("DEG/pristine_disease/stromal_specific/secretory/GSEA/")
+dir_out<-("Fig3/")
 
 pat<-"*RDS$"
 files_sec <- list.files( path= dir_secretory, pattern = pat, full.names = TRUE)
@@ -20,7 +20,6 @@ names(gc_list) <- cellNames
 filtered_gc <- gc_list[sapply(gc_list, function(df) nrow(df) > 0)]
 
 result_access <- function(x){
-  # x<-x %>% filter(enrichmentScore>0,p.adjust<0.05) %>% arrange(desc(enrichmentScore),p.adjust)
   x<-x %>% filter(p.adjust<0.05) %>% arrange(desc(enrichmentScore),p.adjust)
   x <- x %>% arrange(desc(NES))
   print(x)

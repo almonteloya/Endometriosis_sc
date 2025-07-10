@@ -1,11 +1,11 @@
-### Reading and plotting immune
+### Reading and plotting immune GSEA
 
 library(ggplot2) 
 library(Seurat)
 library(dittoSeq)
 
-dir_out="//krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig5/"
-NK_GSEA = readRDS("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/immune_broad/secretory/GSEA2/NK_cells_secretory_DEG.RDS_GSEA.RDS")
+dir_out="/Fig5/"
+NK_GSEA = readRDS("NK_cells_secretory_DEG.RDS_GSEA.RDS")
 
 ## Top 10 and filter
 

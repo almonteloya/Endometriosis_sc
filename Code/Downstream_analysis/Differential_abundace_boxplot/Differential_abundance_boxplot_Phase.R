@@ -1,3 +1,6 @@
+### Differentil abundance for subpopulations
+##  proliferative vs secretory
+## Stratified by Pristine vs disease 
 
 library(ggplot2)
 library(Seurat)
@@ -24,13 +27,6 @@ get_info <- function(meta.data, cluster_type, condition1){
 
 
 plot_box <- function(s_obj,D_S){
-  s_obj@meta.data <- s_obj@meta.data %>% mutate(condition_full_reduced=recode(condition_full,
-                                                                              "III-IV"="Disease",
-                                                                              "I-II"="Disease",
-                                                                              "Pathological_control" = "Pathological_control",
-                                                                              "Pristine_control"="Pristine_control"))
-  
-  
   Idents(s_obj)<-s_obj$condition_full_reduced
   s_obj<-subset(s_obj,idents=D_S)
   data_ind<-get_info (s_obj@meta.data, annotation, Phase_menstrual_reduced)
@@ -71,10 +67,11 @@ plot_box <- function(s_obj,D_S){
   return(list(p1,p2))
 }
 
+dir_in=("dir/seurat/object")
+DA_dir=('out/dir')
+
 
 #### Epithelial:
-dir='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/'
-dir_out='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/subset_celltype/epithelia/difuse_fix/recluster/'
 s_obj = readRDS(file=paste0(dir_out,"epithelial_filter_obj.RDS"))
 metadata<-readRDS(file=paste0(dir_out,"metadata_annotation.RDS"))
 s_obj@meta.data <- metadata
@@ -91,8 +88,6 @@ dev.off()
 
 
 ## STROMAL
-dir_in <- '/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/'
-dir_out<-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/SFig8/"
 s_obj <- readRDS(sprintf("%s/Stromal_obj_2025.RDS",dir_in))
 DimPlot(s_obj)
 p_pro<-plot_box(s_obj,"Disease")
@@ -107,9 +102,9 @@ dev.off()
 
 
 ## Immune
-dir_out='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/subset_celltype/immune/'
+dir_in='/dir/in'
 s_obj <- readRDS(paste0(dir_out,"immune_annotation_all.RDS"))
-meta_annotation <- readRDS(file=paste0(dir_out,"immune_aggregate.RDS"))
+meta_annotation <- readRDS(file=paste0(dir_in,"immune_aggregate.RDS"))
 s_obj@meta.data <- meta_annotation
 s_obj$annotation<- s_obj$immune_agregate1_c
 Idents(s_obj)<-s_obj$annotation

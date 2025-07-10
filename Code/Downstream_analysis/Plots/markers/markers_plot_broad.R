@@ -5,8 +5,8 @@ library(Seurat)
 library(dittoSeq)
 library(dplyr)
 
-dir_in='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/'
-dir_out<- '/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Sfig1/'
+dir_in='/seurat/objects'
+dir_out<- '/Sfig1/'
 
 dir.create(dir_out)
 s_obj = readRDS(file=paste0(dir_in,"merged_data_celltype_all_2025.RDS"))
@@ -36,9 +36,9 @@ pdf(paste0(dir_out,"Markers_broad.pdf"),height = 5)
 DotPlot( s_obj, features=All_markers,cols = c("yellow", "red")) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   theme(
-    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 14),  # Increase font size for x-axis text
-    axis.text.y = element_text(size = 16),  # Increase font size for y-axis text
-    axis.title = element_text(size = 16),   # Increase font size for axis titles
-    plot.title = element_text(size = 16)    # Increase font size for plot title
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 14),  
+    axis.text.y = element_text(size = 16),  
+    axis.title = element_text(size = 16),  
+    plot.title = element_text(size = 16)    
   )
 dev.off()

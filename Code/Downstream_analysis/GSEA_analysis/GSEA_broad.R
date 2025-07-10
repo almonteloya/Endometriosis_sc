@@ -1,17 +1,19 @@
-### GSEA 
-## Stromal all cells
+### GSEA
+## Looking into broad celltypes and generating GSEA files
+## Using DEG results from DEG_broad.R 
 
 library(ggplot2) 
 library(Seurat)
 library(dittoSeq)
 library(clusterProfiler)
 library(fgsea)
-dir_out="//krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/GSEA/"
+
+dir_out="/dir/out"
   
 organism = "org.Hs.eg.db"
 library(organism, character.only = TRUE)
 
-dir = "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/"
+dir = "/dir/in/DEG/output"
 pat<-"*RDS$"
 files <- list.files( path= dir, pattern = pat, full.names = TRUE)
 file_name <- basename(files)

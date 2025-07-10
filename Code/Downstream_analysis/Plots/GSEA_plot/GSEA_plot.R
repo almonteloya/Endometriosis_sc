@@ -4,8 +4,8 @@ library(ggplot2)
 library(Seurat)
 library(dittoSeq)
 
-dir_out="//krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/GSEA/"
-dir = "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/"
+dir_out="broad/GSEA/"
+dir = "DEG/pristine_disease/broad/"
 
 pat<-"*RDS$"
 files <- list.files( path= dir_out, pattern = pat, full.names = TRUE)

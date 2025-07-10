@@ -1,6 +1,4 @@
 #### UMAP plots of broad celltypes
-### April 2025
-
 #### All cells
 
 
@@ -9,8 +7,8 @@ library(Seurat)
 library(dittoSeq)
 library(dplyr)
 
-dir_in='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/seurat_objects/'
-dir_out<- '/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig2/'
+dir_in='seurat_objects/'
+dir_out<- 'Fig2/'
 
 dir.create(dir_out)
 

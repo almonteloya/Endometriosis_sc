@@ -1,3 +1,9 @@
+## DEG of pristine vs control
+# Proliferative vs secretory stratified
+## Overlap of genes in both phases
+## Stromal and epithelial
+
+
 library(Seurat)
 library(tidyverse)
 library(dplyr)
@@ -8,13 +14,10 @@ library(ggplot2)
 library(ggrepel)
 library(ComplexHeatmap)
 
-#dir1 <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Stromal_fibroblast_proliferative_DEG.RDS")
-#dir2 <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Stromal_fibroblast_secretory_DEG.RDS")
-#dir_out <- "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/SFig8/"
 
-dir1 <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Unciliated_Epithelia_proliferative_DEG.RDS")
-dir2 <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Unciliated_Epithelia_secretory_DEG.RDS")
-dir_out <- "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Sfig11/"
+dir1 <- ("DEG/of/proliferative")
+dir2 <- ("DEG/of/secretory")
+dir_out <- "out/dir"
 
 files<-list(dir1,dir2)
 
@@ -22,7 +25,6 @@ DEG_genes <- lapply(files, readRDS)
 
 r_c <- function(x,dataname){
   x <- x %>% filter (abs(avg_log2FC) > .25 & p_val_adj < 0.05)
-  # x <- x %>% filter ( p_val_adj < 0.05)
   x<- tibble::rownames_to_column(x, "Gene")
   x<- dplyr::select(x, c(Gene,avg_log2FC,p_val_adj))
   x

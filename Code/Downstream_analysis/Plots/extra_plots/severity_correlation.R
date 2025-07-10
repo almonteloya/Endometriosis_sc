@@ -1,12 +1,14 @@
-###----- Density plots differences between LFC 
+###----- Correlation plots differences between LFC 
+### LogFC of : [pristine vs all endo] vs [pristine vs endo II/II] 
+### LogFC of : [pristine vs all endo] vs [pristine vs endo III/IV] 
 
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
 
 
-dir <- "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/severity/"
-dir2<- "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/"
+dir <- "/DEG/severity/"
+dir2<- "DEG/Broad/"
 sev <- list.files( path=dir,pattern = ".RDS", full.names = TRUE)
 all <-list.files( path=dir2,pattern = ".RDS", full.names = TRUE)
 
@@ -32,18 +34,19 @@ celltypes = c("Ciliated","Unciliated","Endothelia","fibroblast","Smooth")
 phase<-c("secretory","proliferative")
 
 
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/SFseverity/correlation.pdf", height = 5)
+pdf("SFseverity/correlation.pdf", height = 5)
 for (i in c(1:2)) {
   for (j in c(1:5)) {
     print(phase[i])
     print(celltypes[j])
 phase_sev <- significant_sev[grepl(phase[i], names(significant_sev))]
 phase_sig <- significant_all[grepl(phase[i], names(significant_all))]
-sev_comp <- phase_sev[grepl(celltypes[j], names(phase_sev))]
-all_comp <- phase_sig[grepl(celltypes[j], names(phase_sig))]
+sev_comp <- phase_sev[grepl(celltypes[j], names(phase_sev))] ##severity 
+all_comp <- phase_sig[grepl(celltypes[j], names(phase_sig))] ## all number
 
   for (z in c(1:2)) {
 Stromal_secretory<- list(sev_comp[[z]],all_comp[[1]])
+## Merging 
 merged_stromal <- Stromal_secretory %>% purrr::reduce(full_join, by='Gene') 
 merged_stromal_na <- merged_stromal %>% na.exclude()
   

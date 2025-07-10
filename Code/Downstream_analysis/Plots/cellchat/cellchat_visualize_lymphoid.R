@@ -1,6 +1,8 @@
 ## Cellchat
-### Proliferative exploration 
-## Selecting pathways-- MF
+### pristine controls vs endometriosis 
+## Proliferative  
+## Net differentila visualization
+## Innate lymphoid visualization 
 
 library(dplyr)
 library(CellChat)
@@ -19,8 +21,8 @@ read_process <- function(x){
 }
 
 
-dir_out="/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig6/"
-dir_pristine="/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/cellchat/"
+dir_out="/out/dir"
+dir_pristine="dir/with/cellchat/objects"
 
 condi<-c("disease_proliferative","control_pro")
 cellchat_objs <- lapply(condi,read_process)

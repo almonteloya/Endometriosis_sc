@@ -1,5 +1,5 @@
 ## For cellchat we want to connect immune and non-immune
-## Add the immune data into the non_immune one
+## Add the immune data annotation into the broad annotation
 
 
 library(Seurat)
@@ -10,7 +10,7 @@ dir_obj="path/"
 merged_data = readRDS(file=paste0(dir_obj,"merged_data"))
 
 ### We also need the immune cell part 
-immune_data <- readRDS("immune_annotation.RDS")
+immune_data <- readRDS("immune_annotation.RDS") ## this is the metadata for the immune object
 ident_number <- levels(Idents(immune_data))
 
 for (i in 0:length(ident_number)) {

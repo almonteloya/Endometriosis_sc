@@ -1,12 +1,16 @@
 ## Cellchat 
+## Process and generate cellchat objects to compare 
+
 library(CellChat)
 library(Seurat)
 
-merged_data_sub<-readRDS("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/merged_data_cellchat.RDS")
+merged_data_sub<-readRDS("merged_data_cellchat.RDS") ##Object with non-immune and immnune celltypes
 dir_out<-("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/cellchat/")
-## some of the celltypes are not present in all of the data sets
-Idents(merged_data_sub)<-merged_data_sub$immune_alltype_3
+
+## some of the Celltypes are not present in all of the data sets, it's easier to remove
+Idents(merged_data_sub)<-merged_data_sub$immune_annotation
 merged_data_sub <- subset(merged_data_sub, idents= c("cDC1","MAST"), invert=TRUE)
+
 
 CellChatDB <- CellChatDB.human # loading the data
 showDatabaseCategory(CellChatDB)
@@ -15,16 +19,17 @@ CellChatDB.use <- CellChatDB # simply use the default CellChatDB
 
 
 cell_chat_obj <- function(seurat_obj,name_obj){
+  ### For each seurat obj create a cellchat object
   data.input <- GetAssayData(seurat_obj, assay = "RNA", slot = "data") # normalized data matrix
-  Idents(seurat_obj)<-seurat_obj$immune_alltype_3
+  Idents(seurat_obj)<-seurat_obj$immune_annotation
   labels <- Idents(seurat_obj)
   meta <- data.frame(group = labels, row.names = names(labels)) # create a dataframe of the cell labels
   cellchat <- createCellChat(object = data.input, meta = meta, group.by = "group")
   
+  ## Adding metadata information
   meta$condition<-seurat_obj@meta.data$Condition
   meta$patient_id<-seurat_obj@meta.data$Patient_id
   meta$phase<-seurat_obj@meta.data$Phase_menstrual_reduced
-  
   cellchat <- addMeta(cellchat, meta = meta, meta.name = "labels")
   #cellchat <- setIdent(cellchat, ident.use = "labels") # set "labels" as default cell identity
   levels(cellchat@idents) # show factor levels of the cell labels
@@ -36,13 +41,10 @@ cell_chat_obj <- function(seurat_obj,name_obj){
   
   # Preprocessing the expression data for cell-cell communication analysis
   cellchat <- subsetData(cellchat) # This step is necessary even if using the whole database
-  #options(future.globals.maxSize = 400 * 1024^2)
-  #future::plan("multiprocess", workers = 4) # do parallel
   cellchat <- identifyOverExpressedGenes(cellchat)
   cellchat <- identifyOverExpressedInteractions(cellchat)
   
   ## Compute the communication probability and infer cellular communication network
-  
   cellchat <- computeCommunProb(cellchat)
   # Filter out the cell-cell communication if there are only few number of cells in certain cell groups
   cellchat <- filterCommunication(cellchat, min.cells = 10)
@@ -53,6 +55,7 @@ cell_chat_obj <- function(seurat_obj,name_obj){
 
 
 cellchat_object <- function(){
+  ## Stratified by menstrual phase and disease condition 
   disease_obj<-subset(merged_data_sub, subset = Condition =="disease")
   disease_sec<-subset(disease_obj, subset = Phase_menstrual_reduced =="secretory")
   cell_chat_obj(disease_sec,  "disease_secretory")

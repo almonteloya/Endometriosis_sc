@@ -1,5 +1,5 @@
-### comparing pristine cellchart
-
+### comparing pristine cellchat
+## Plotting based on cellchat output
 
 library(Seurat)
 library(CellChat)
@@ -22,8 +22,8 @@ read_process <- function(x){
 }
 
 ## preparing object
-dir_obj="/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/cellchat/"
-dir_out = "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig6/"
+dir_obj="/dir/cellchat/output"
+dir_out = "out/dir"
 
 read_cell_chat <- function(condi){
   cellchat_objs <- lapply(condi,read_process)
@@ -136,8 +136,6 @@ t <- factor(t, levels = t)
 # data$Comparison <- factor(data$Comparison, levels = c('RA vs control', 'High DA vs control', 'High DA vs low DA', 'Low DA vs control'))
 data$name <- factor(data$name, levels = t)
 
-# data <- data %>% filter(logfold == 'Inf' & logfold == '-Inf')
-#data <- data %>% filter(logfold != 'Inf' & logfold != '-Inf')
 data$Presence <- ifelse(data$logfold == 'Inf', 'Only in group 1', ifelse(data$logfold == '-Inf', 'Only in group 2', 'In both groups'))
 data$size <- data$logfold
 data$size <- ifelse(data$size == 'Inf', 2, ifelse(data$logfold == '-Inf', 2, ''))
@@ -148,9 +146,6 @@ data <-  data[-toDelete, ]
 data
 library(scales)
 
-## for poster
-#data <- data %>% filter(name %in% c("IFN-II","IL6","CSF","ANNEXIN","CD86")) %>%
-#  filter(Comparison %in% c("Disease pro vs Control pro","Disease sec vs Control sec"))
 
 
 plot3 <- ggplot(data, aes(Comparison, name, fill = logfold, colour = Presence)) +
@@ -180,7 +175,6 @@ ggplot(data, aes(Comparison, name, fill = logfold, colour = Presence)) +
   ylab('') +
   labs(title = 'Logfold change per group and pathway')
 
-## for poster
 data1 <- data %>% 
   filter(Comparison %in% c("Disease pro vs Control pro","Disease sec vs Control sec"))
 
@@ -224,43 +218,3 @@ ggplot(data1, aes(Comparison, name, fill = logfold2)) +
   ) +
   ylab('') +
   labs(title = 'Logfold change per group and pathway')
-
-
-## Getting more info
-
-Immune <- c("IFN-II", "MHC-I", "MHC-II", "GALECTIN", "ICAM", "CLEC", "MIF", "CD99", "CD86", "CD137", "LIGHT", "TIGIT", "IL1", "COMPLEMENT", "CXCL", "CSF3")
-Adhesion_Migration<- c("SEMA3", "SEMA4", "SELE", "TENASCIN", "LAMININ", "AGRN", "PERIOSTIN", "ESAM", "NCAM", "THY1", "NECTIN", "CADM", "CEACAM", "THBS","ADGRE5")
-Growth_Differentiation <- c("FGF", "EGF", "GRN", "HSPG", "EPHB", "EPHA", "RELN", "LIFR")
-Signaling_Regulation <- c("PTPRM", "ANNEXIN", "SPP1","GAS")
-
-determine_category <- function(name) {
-  if (name %in% Immune) {
-    return("Immune")
-  } else if (name %in% Adhesion_Migration) {
-    return("Adhesion_Migration")
-  } else if (name %in% Growth_Differentiation) {
-    return("Growth_Differentiation")
-  } else if (name %in% Signaling_Regulation) {
-    return("Signaling_Regulation")
-  } else {
-    return(NA)  # or some default value if name does not match any category
-  }
-}
-
-data1<- data1 %>% mutate(category = sapply(name, determine_category))
-
-
-ggplot(data1, aes(Comparison, name, fill = logfold2)) +
-  geom_point(shape = 21, stroke = 1, size = 3) +
-  #scale_fill_gradientn(colours = c('blue', 'white', 'red'), values = rescale(c(-8, 0, 3)), guide = 'colorbar', na.value = 'white') +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, na.value = 'white') +
-  theme_bw() +
-  theme(
-    legend.key.size = unit(1, "cm"),
-    axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1),
-    plot.caption = element_text(hjust = 0, face = 'bold', size = 10),
-    axis.text = element_text(size = 9),
-    axis.title.y = element_text(size = 10)
-  ) +
-  ylab('') +
-  labs(title = 'Logfold change per group and pathway') + facet_grid(~category)

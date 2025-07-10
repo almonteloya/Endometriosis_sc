@@ -1,5 +1,5 @@
-### CLEANup pelase
-## Barplot of number ofr DEG upregulated and downregulated by cell type
+## Barplot of number of DEG upregulated and downregulated by cell type
+## Using output from DEG_specific.R
 
 library(dplyr)
 library(ggplot2)
@@ -8,8 +8,7 @@ library(ggrepel)
 
 
 data_generate <- function(dir, phase) {
-  ## Generate the tables with the number of genes by each phase
-  
+
   ## Get the RDS files of the DEG 
   files <- list.files( path= dir,pattern = "RDS", full.names = TRUE)
   filtered_markers <- lapply(files, readRDS)
@@ -40,38 +39,33 @@ data_generate <- function(dir, phase) {
 
 
 
-### Stromal cells
 
-dir <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/stromal_specific/secretory/")
+dir <- ("/dir/DEG")
 secretory_genes<- data_generate(dir,"secretory")
-dir <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/stromal_specific/proliferative/")
 proliferative_genes<- data_generate(dir,"proliferative")
 melted_df_pro <- reshape2::melt(proliferative_genes,  id.vars = "celltype",measure.vars = c("Upregulated", "Downregulated"))
-
 melted_df_sec <- reshape2::melt(secretory_genes,  id.vars = "celltype",measure.vars = c("Upregulated", "Downregulated"))
 
 
+##---Stromal Fibroblast
 
-#### Select genes
+#### Select celltypes
+## Celltypes with DEG in any of the phases 
+## Celltypes with more than 1 sample per group
 
-#cell_selected<-c( "CD8+-T-cells-_DEG.RDS" ,"Macrophages_DEG.RDS", "NK-cells_DEG.RDS" ,       "Monocytes_DEG.RDS")
-#cell_selected<-c( "Glandular_1.RDS" ,"EMT_epithelia_2.RDS", "EMT_epithelia_1.RDS" ,"Ciliated_epithelia.RDS")
-#cell_selected <- c("HSP_stromal_fibroblast.RDS", "Proliferative_fibroblast.RDS", "SFRP4.RDS", "Stromal_fibroblast_1.RDS", "Stromal_fibroblast_2.RDS", "Stromal_fibroblast_3.RDS", "vascular_smooth_muscle.RDS")
+cell_selected <- c("HSP_stromal_fibroblast.RDS", "Proliferative_fibroblast.RDS", "SFRP4.RDS", "Stromal_fibroblast_1.RDS", "Stromal_fibroblast_2.RDS", "Stromal_fibroblast_3.RDS", "vascular_smooth_muscle.RDS")
 
-#melted_df_sec<-melted_df_sec[melted_df_sec$celltype %in% cell_selected,]
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig3/barplot_secretory_stromal.pdf", height = 4,width = 8)
-#pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/DEG2/viz_2024/barplot_secretory_epithelial.pdf", height = 4,width = 8)
+melted_df_sec<-melted_df_sec[melted_df_sec$celltype %in% cell_selected,]
 
+## Secretory
 ggplot(melted_df_sec, aes(x = celltype, y = value,fill=variable)) +
   geom_bar(stat = "identity") + scale_fill_manual(values=c('red','blue'))  + ylim(0,150)+
   theme_minimal() +  coord_flip() + scale_x_discrete(position = "top")  + theme(text = element_text(size = 20),legend.position="bottom")
-dev.off()
 
-#melted_df_pro<-melted_df_pro[melted_df_pro$celltype %in% cell_selected,]
 
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig3/barplot_proliferative_stromal.pdf",  height = 4,width = 8)
-#pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/DEG2/viz_2024/barplot_proliferative_epithelial.pdf", height = 4,width = 8)
- 
+melted_df_pro<-melted_df_pro[melted_df_pro$celltype %in% cell_selected,]
+
+## Proliferative
 ggplot(melted_df_pro, aes(x = celltype, y = value, fill = variable)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c('red', 'blue')) +
@@ -81,30 +75,24 @@ ggplot(melted_df_pro, aes(x = celltype, y = value, fill = variable)) +
   theme(text = element_text(size = 20), legend.position = "bottom") +
   scale_y_reverse(limits = c(150, 0))
 
-dev.off()
 
 
 
 
 ### Epithelial 
 
-dir <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/epithelial_specific/secretory/")
+dir <- ("/DEG/epithelial/")
 secretory_genes<- data_generate(dir,"secretory")
-dir <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/epithelial_specific/proliferative/")
 proliferative_genes<- data_generate(dir,"proliferative")
 melted_df_pro <- reshape2::melt(proliferative_genes,  id.vars = "celltype",measure.vars = c("Upregulated", "Downregulated"))
-
 melted_df_sec <- reshape2::melt(secretory_genes,  id.vars = "celltype",measure.vars = c("Upregulated", "Downregulated"))
 
 
 
 #### Select genes
-
-#cell_selected<-c( "CD8+-T-cells-_DEG.RDS" ,"Macrophages_DEG.RDS", "NK-cells_DEG.RDS" ,       "Monocytes_DEG.RDS")
 cell_selected<-c( "Glandular-1_secretory_DEG.RDS", "EMT-epithelia-1_secretory_DEG.RDS" ,"Ciliated-epithelia_secretory_DEG.RDS")
 
 melted_df_sec<-melted_df_sec[melted_df_sec$celltype %in% cell_selected,]
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig4/barplot_secretory_epi.pdf", height = 4,width = 8)
 
 ggplot(melted_df_sec, aes(x = celltype, y = value,fill=variable)) +
   geom_bar(stat = "identity") + scale_fill_manual(values=c('red','blue'))  + ylim(0,900)+
@@ -116,7 +104,6 @@ cell_selected<-c( "Glandular-1_proliferative_DEG.RDS", "EMT-epithelia-1_prolifer
                   "Ciliated-epithelia_proliferative_DEG.RDS")
 melted_df_pro<-melted_df_pro[melted_df_pro$celltype %in% cell_selected,]
 
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig4/barplot_proliferative_epi.pdf",  height = 4,width = 8)
 
 ggplot(melted_df_pro, aes(x = celltype, y = value, fill = variable)) +
   geom_bar(stat = "identity") +
@@ -127,17 +114,14 @@ ggplot(melted_df_pro, aes(x = celltype, y = value, fill = variable)) +
   theme(text = element_text(size = 20), legend.position = "bottom") +
   scale_y_reverse(limits = c(900, 0))
 
-dev.off()
 
 
+####------- Immune
 
 
-#### Immune
-
-
-dir <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/immune_broad/secretory/")
+dir <- ("/dir/DEG_output/secretory")
 secretory_genes<- data_generate(dir,"secretory")
-dir <- ("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/immune_broad/proliferative/")
+dir <- ("/dir/DEG_output/proliferative")
 proliferative_genes<- data_generate(dir,"proliferative")
 
 
@@ -157,7 +141,6 @@ cell_selected<-c( "CD8+_T_cells_secretory_DEG.RDS" , "Monocytes_secretory_DEG.RD
                   "NK_cells_secretory_DEG.RDS",  "MAST_secretory_DEG.RDS","Macrophages_secretory_DEG.RDS")
 
 melted_df_sec<-melted_df_sec[melted_df_sec$celltype %in% cell_selected,]
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig5/barplot_secretory_immune.pdf", height = 4,width = 8)
 
 ggplot(melted_df_sec, aes(x = celltype, y = value,fill=variable)) +
   geom_bar(stat = "identity") + scale_fill_manual(values=c('red','blue'))  + ylim(0,120)+
@@ -171,7 +154,6 @@ cell_selected<-c( "CD8+_T_cells_proliferative_DEG.RDS" ,"Monocytes_proliferative
 
 melted_df_pro<-melted_df_pro[melted_df_pro$celltype %in% cell_selected,]
 
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig5/barplot_proliferative_immune.pdf",  height = 4,width = 8)
 
 ggplot(melted_df_pro, aes(x = celltype, y = value, fill = variable)) +
   geom_bar(stat = "identity") +

@@ -1,16 +1,12 @@
 
-### April 2024
-## Making a better visualization with the volcano plot
+##  volcano plot
 library(ggplot2)
 library(Seurat)
 library(dittoSeq)
 library(ggrepel)
 
 
-dir_in= "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/fibroid_pristine/"
-dir_in= "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/"
-dir_in= "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/menstrual_phase/"
-dir_in= "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/immune_specific/"
+dir_in= "DEG/output/"
 
 dir_out= paste0(dir_in,"volcano/")
 dir.create(dir_out)

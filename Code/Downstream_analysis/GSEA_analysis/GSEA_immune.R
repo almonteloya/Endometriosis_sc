@@ -1,4 +1,6 @@
-
+### GSEA
+## Looking into immune celltypes and generating GSEA files
+## Using DEG results from DEG_immune.R 
 
 library(ggplot2)
 library(Seurat)
@@ -9,7 +11,7 @@ library(fgsea)
 organism = "org.Hs.eg.db"
 library(organism, character.only = TRUE)
 
-dir = "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/immune_broad/secretory///"
+dir = "dir/DEG/output"
 dir_out = paste0(dir,"GSEA2/")
 dir.create(dir_out)
 

@@ -1,6 +1,8 @@
 ## Cellchat
-### Secretory exploration 
-## Selecting pathways 
+### pristine controls vs endometriosis 
+## Secretory
+## Net differential visualization
+## VSM visualization 
 
 library(dplyr)
 library(CellChat)
@@ -20,10 +22,10 @@ read_process <- function(x){
 }
 
 
-dir_out="/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig6/"
+dir_out="/dir/out/"
 
 ## Reading the files
-dir_pristine="/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/cellchat/"
+dir_pristine="dir/with/cellchat/information"
 condi<-c("disease_secretory","control_sec")
 cellchat_objs <- lapply(condi,read_process)
 ## fixing a problem with the columns

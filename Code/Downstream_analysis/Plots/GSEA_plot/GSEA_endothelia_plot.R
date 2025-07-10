@@ -5,8 +5,8 @@ library(ggplot2)
 library(clusterProfiler)
 library(fgsea)
 library(dplyr)
-dir_secretory<-("data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/GSEA/")
-dir_out<-("data1/immunox/XREP1a/10x/merged_XREP/Fix2025/SFEndothelia/")
+dir_secretory<-("pristine_disease/broad/GSEA/")
+dir_out<-("SFEndothelia/")
 
 pat<-"*RDS$"
 files <- list.files( path= dir_secretory, pattern = pat, full.names = TRUE)
@@ -21,7 +21,6 @@ names(filtered_gc)
 filtered_gc <- filtered_gc[grep("Endothelia", names(filtered_gc))]
 
 result_access <- function(x){
-  # x<-x %>% filter(enrichmentScore>0,p.adjust<0.05) %>% arrange(desc(enrichmentScore),p.adjust)
   x<-x %>% dplyr::filter(p.adjust<0.05) %>% arrange(desc(enrichmentScore),p.adjust)
   x <- x %>% arrange(desc(NES))
   print(x)

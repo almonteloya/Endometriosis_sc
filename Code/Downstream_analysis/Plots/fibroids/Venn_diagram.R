@@ -9,8 +9,8 @@ library(dittoSeq)
 library(ggrepel)
 library(dplyr)
 
-dir_fibroids <-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/fibroid_pristine/"
-dir_endo <-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/"
+dir_fibroids <-"DEG/fibroid_pristine/"
+dir_endo <-"DEG/pristine_disease/broad/"
 
 r_filter <- function(df){
   x<- df %>% dplyr::filter(avg_log2FC > .25 & p_val_adj < 0.05 )

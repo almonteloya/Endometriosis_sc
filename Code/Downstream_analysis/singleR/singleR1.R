@@ -11,9 +11,9 @@ library(dittoSeq)
 library(dplyr)
 library(scuttle)
 
-dir1='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/'
-dir2="/krummellab/data1/immunox/XREP1a/data/matrix_singleR/"
-dir_out='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/single_R/'
+dir1='/merged_XREP/'
+dir2="matrix_singleR/" ## Matrix for downloaded data
+dir_out='single_R/'
 
 
 wanxin_data<-function(){

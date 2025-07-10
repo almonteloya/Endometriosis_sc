@@ -1,12 +1,13 @@
 ## Markers based on literature
 
-dir_out <- '/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig5/'
-dir2='/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/'
+dir_out <- 'Fig5/'
+dir2='seurat/object/immune'
 
 s_obj = readRDS(file=paste0(dir2,"Immune_obj_2025.RDS"))
 
 
-#### markers for this
+#### markers for this based on literature
+
 tcell<-c("CD3D","CD3G","CD3E")
 cd8_tcell <-c( "CD8A")
 T_reg<-c("CD2","CD4","FOXP3")

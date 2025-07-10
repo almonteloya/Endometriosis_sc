@@ -5,7 +5,7 @@ library(ggplot2)
 library(clusterProfiler)
 library(fgsea)
 
-dir_secretory<-("data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/epithelial_specific//GSEA/")
+dir_secretory<-("epithelial_specific//GSEA/")
 dir_out<-("data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig4/")
 
 pat<-"*RDS$"
@@ -20,7 +20,6 @@ filtered_gc <- gc_list[sapply(gc_list, function(df) nrow(df) > 0)]
 
 result_access <- function(x){
    x<-x %>% filter(enrichmentScore>0,p.adjust<0.05) %>% arrange(desc(enrichmentScore),p.adjust)
-  #x<-x %>% filter(p.adjust<0.05) %>% arrange(desc(enrichmentScore),p.adjust)
   x <- x %>% arrange(desc(NES))
   print(x)
   x<-x[1:20,]
@@ -35,8 +34,6 @@ for (i in 1:length(top_10)) {
 }
 
 
-### In this case I only want to plot 2
-#common_df<-rbind(top_10[[1]],top_10[[2]],top_10[[3]])
 common_df<-rbind(top_10[[1]],top_10[[2]],top_10[[3]])
 common_df$gene_f <- factor(common_df$gene, levels = c(
   "Glandular-1_proliferative_DEG.RDS_GSEA.RDS",

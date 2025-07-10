@@ -1,11 +1,12 @@
-## Barplot Pristine vs Fibroid
+## Barplot Pristine vs Fibroid DEG
+
 library(ggplot2)
 library(Seurat)
 library(dittoSeq)
 library(dplyr)
 
-dir_fibroids <-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/fibroid_pristine/"
-dir_out <- "/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/SFibroids/"
+dir_fibroids <-"Fibroid/vs/pristine/DEG"
+dir_out <- "/SFibroids/"
 r_filter <- function(df){
   x<- df %>% dplyr::filter(avg_log2FC > .25 & p_val_adj < 0.05 )
   genesup <- paste0(rownames(x),"_UP")

@@ -1,10 +1,17 @@
+### Upset plot: shared genes between broad celltypes
+## endo vs pristine
+## Using output from DEG_broad.RDS
+## stratified by phase
+
+
 library(dplyr)
 library(ggplot2)
 library(ggrepel)
 
 
-DEG_dir<-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/"
-dir_out<-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig2/"
+DEG_dir<-"DEG/output/broad"
+dir_out<-"outdir"
+
 data1 <- readRDS(paste0(DEG_dir,"Stromal_fibroblast_proliferative_DEG.RDS"))
 data2 <- readRDS(paste0(DEG_dir,"Stromal_fibroblast_secretory_DEG.RDS"))
 
@@ -27,6 +34,7 @@ library(ComplexUpset)
 
 ###### DEG -- both up and down
 ## Proliferative
+
 listInput <- list(data1,data3,data5,data7,data9)
 
 r_filter <- function(df){
@@ -77,7 +85,7 @@ base_annotations =
 
 dev.off()
 
-#### Secretroy 
+#### Secretory
 listInput <- list(data2,data4,data6,data8,data10)
 
 

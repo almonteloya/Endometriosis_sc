@@ -5,13 +5,10 @@ library (dplyr)
 library(ggplot2)
 library(ggrepel)
 
-data1 <- readRDS("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Stromal_fibroblast_proliferative_DEG.RDS")
-data2 <- readRDS("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Stromal_fibroblast_secretory_DEG.RDS")
-celltype<-"Stromal_fibroblast"
 
-#data1 <- readRDS("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Unciliated_Epithelia_proliferative_DEG.RDS")
-#data2 <- readRDS("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/Unciliated_Epithelia_secretory_DEG.RDS")
-#celltype<-"Unciliated_epithelia"
+data1 <- readRDS("Path") ### Proliferative DEG list
+data2 <- readRDS("Path")## Secretory DEG list
+celltype<-"Unciliated_epithelia" ## Or stromal fibroblast
 
 
 merged_df <- merge(data1, data2, by =0,all=T)
@@ -21,8 +18,10 @@ merged_df$gene <- merged_df$Row.names
 
 merged_df <- merged_df %>%
   mutate(significance = case_when(
-    abs(avg_log2FC.x) > 0.25 & p_val_adj.x < 0.05 & (abs(avg_log2FC.y) <= 0.25 | p_val_adj.y >= 0.05) ~ "Unique_proliferative",
-    abs(avg_log2FC.y) > 0.25 & p_val_adj.y < 0.05 & (abs(avg_log2FC.x) <= 0.25 | p_val_adj.x >= 0.05) ~ "Unique_secretory",
+    abs(avg_log2FC.x) > 0.25 & p_val_adj.x < 0.05 & (is.na(p_val_adj.y)) ~ "Unique_proliferative",
+    abs(avg_log2FC.y) > 0.25 & p_val_adj.y < 0.05 & (is.na(p_val_adj.x)) ~ "Unique_secretory",
+    abs(avg_log2FC.x) > 0.25 & p_val_adj.x < 0.05 & (abs(avg_log2FC.y) < 0.25 | p_val_adj.y > 0.05) ~ "Unique_proliferative",
+    abs(avg_log2FC.y) > 0.25 & p_val_adj.y < 0.05 & (abs(avg_log2FC.x) < 0.25 | p_val_adj.x >= 0.05) ~ "Unique_secretory",
     (avg_log2FC.x) > 0.25 & p_val_adj.x < 0.05 & (avg_log2FC.y) > 0.25 & p_val_adj.y < 0.05 ~ "Upregulated_in_endometriosis",
     (avg_log2FC.x) < -0.25 & p_val_adj.x < 0.05 & (avg_log2FC.y) < -0.25 & p_val_adj.y < 0.05 ~ "Downregulted_in_endometriosis",
     (avg_log2FC.x)  > 0.25 & p_val_adj.x < 0.05 & (avg_log2FC.y) < -0.25 & p_val_adj.y < 0.05 ~ "Opposite_direction",
@@ -59,8 +58,8 @@ sorted_df <- merged_df %>%
   arrange(desc(abs_sum_log2FC))
 
 # Plot the data
-#pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig4/log_log.pdf",width =8)
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig3/log_log.pdf",width =8)
+pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig4/log_log.pdf",width =8)
+#pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/Fig3/log_log.pdf",width =8)
 ggplot(merged_df, aes(x = avg_log2FC.x, y = avg_log2FC.y, color = significance)) +
   geom_point(alpha = 0.5) +
   scale_color_manual(labels = legend_labels, values = color_map) +

@@ -1,12 +1,14 @@
-## Comapring overlap broad
+## DEG endo vs pristine broad celltypes
+## Comparing overlap 
 ## Secretory vs proliferative
+
 library(ggplot2)
 library(Seurat)
 library(dittoSeq)
 library(ggrepel)
 library(dplyr)
 
-dir_endo <-"/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/DEG/pristine_disease/broad/"
+dir_endo <-"/Dir/out/DEG/"
 
 r_filter <- function(df){
   x<- df %>% dplyr::filter(avg_log2FC > .25 & p_val_adj < 0.05 )
@@ -30,7 +32,6 @@ rds_objects <- lapply(files_list, function(group) lapply(group, readRDS))
 significant <- lapply(rds_objects, function(group) lapply(group, r_filter))
 
 
-pdf("/krummellab/data1/immunox/XREP1a/10x/merged_XREP/Fix2025/SFBroadVen/venn_broad.pdf",width = 4, height = 4)
 for (i in seq_len(length(significant[[1]]))) {
   x<-c(Proliferative=significant[[2]][i],Secretory=significant[[1]][i])
   gplot<-ggVennDiagram(x) + 
@@ -39,6 +40,3 @@ for (i in seq_len(length(significant[[1]]))) {
   ggtitle(names_celltypes_sec[i])
   print(gplot)
 }
-
-
-dev.off()

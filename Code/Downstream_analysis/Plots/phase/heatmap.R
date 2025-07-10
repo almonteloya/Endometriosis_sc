@@ -1,5 +1,6 @@
 
-## Hestmap diases vs control
+## Heatmap proliferative vs secretory, stratified by disease status
+## Overlap of 2 or per gene
 
 library(Seurat)
 library(tidyverse)
@@ -44,11 +45,9 @@ celltype_heatmap <- function(celltype){
   
   
   
-  yb<-colorRampPalette(c("goldenrod","white","purple"))(50)
   yb<-colorRampPalette(c("#56B4E9","white","darkorange"))(50)
   
-  #yb<-colorRampPalette(c("purple","white","darkgreen"))(50)
-  
+
   
   
   heatmap <- Heatmap(mat, name = "logFC", col=yb,
