@@ -1,6 +1,6 @@
 ## Downstream analysis 
 
-Note: After subsetting cells and filtering, the outpit is three seurat objects:
+Note: After subsetting cells and filtering, the output is three seurat objects:
 * All broad cell types 
 * Only stromal cells and VSM
 * Only epithelial cells
