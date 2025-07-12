@@ -1,14 +1,14 @@
 ## Downstream analysis 
 
-Note: After subsetting cells and filtering, the outpit is three seurat objects:
-* All broad cell types 
-* Only stromal cells and VSM
-* Only epithelial cells
-* Only immune cells
+Note: After sub-setting cells and filtering, the output is three extra seurat objects:
 
-Objects used:
-* Fig 1,2: All cell types
-* Fig 3: Stromal
-* Fig 4: Epithelial 
-* Fig 5: Immune 
-* Fig 5: All celltypes + Immune annotation
+* All cells (broad cell types)
+
+* Only stromal cells and VSM (subset)
+
+* Only epithelial cells (subset)
+
+* Only immune cells (subset)
+
+
+These objects were then used for downstream analysis for both broad and specific cell types for immune, stromal fibroblast, VSM, ciliated and unciliated epithelia. Endothelial cell analyis were performed based on object containing all cells. 
